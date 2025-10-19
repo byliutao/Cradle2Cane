@@ -1,0 +1,295 @@
+# Python Bytecode (.pyc, .pyo, .pyd, __pycache__)
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / Packaging
+build/
+dist/
+eggs/
+.eggs/
+*.egg-info/
+*.egg
+MANIFEST
+*.manifest
+*.spec
+wheels/
+*.wheel
+*.whl
+*.dist-info/
+sdist/
+*.tar.gz
+*.zip
+*.egg
+bdist_wheel/
+
+# Installer logs
+pip-log.txt
+pip-delete-this.txt
+pip-wheel-metadata/
+*.signatures
+*.egg-info
+.Python
+Include/
+bin
+share
+*.lib
+*.pth
+*.iml
+*.ipr
+*.iws
+.idea/
+.project
+.settings
+.spyproject/
+.ropeproject/
+.mypy_cache/
+.dmypy.json
+*.sublime-project
+*.sublime-workspace
+.history
+__pyinstaller/
+_MEI*
+*.spec
+
+# Environments (虚拟环境)
+.env
+.venv
+venv/
+env/
+ENV/
+virtualenv/
+*.virtualenv
+instance/
+.python-version
+
+# Pytest cache and coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.hypothesis/
+.tox/
+noxfile.py
+nox.py
+.cache
+.compiled
+*.pyc
+*.pyo
+*.pyd
+
+# OS or Editor backups and temporary files
+*~
+*.bak
+*.swp
+*.swo
+*.diff
+*.patch
+*.tmp
+._*
+*.DS_Store
+*.Trash-*
+ehthumbs.db
+Thumbs.db
+*.log
+*.orig
+*.py.orig
+*.rej
+.ipynb_checkpoints/
+*.aux
+*.log
+*.out
+*.toc
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.blg
+*.bbl
+*.pdf  # 如果你的项目生成PDF文档，但你不希望 track 它们，可以加上
+*.dvi  # 类似 PDF，针对 DVI 文档
+*.ps   # 类似 PDF，针对 PS 文档
+
+# Documentation Build Output (Sphinx etc.)
+docs/_build/
+docs/_static/
+docs/_templates/
+
+# Datascience/ML specific
+data/  # 如果你的大型数据集不应该被 track，取消注释这行 (或者指定更具体的数据目录)
+*.csv
+*.tsv
+*.npy
+*.npz
+*.pkl
+*.pickle
+*.joblib
+*.h5
+*.hdf5
+*.arrow
+
+# Secrets and Configuration (敏感信息和配置，非常重要!)
+local_settings.py
+secrets.py
+config.py
+*.ini
+*.cfg
+*.conf  # 通用配置文件
+.env*    # 忽略 .env 文件以及 .env.example 等
+credentials.json
+api_keys.txt
+
+# Log files (日志文件)
+*.log
+debug.log
+output.log
+error.log
+
+# Test results, coverage, etc.
+nosetests.xml
+*/__pycache__/*
+*.junit.xml
+coverage.xml
+*.egg-info/
+.installed.cfg
+*.mo
+*.pot
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# C extensions
+*.so
+*.dylib
+*.pyd
+
+# System Files
+.localized
+
+# Node modules (如果你的项目也使用了 Node.js / npm)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Python build tool related
+.pybuilder/
+target/
+.pytest-cov/
+coverage/
+htmlcov/
+wheelhouse/
+.hypothesis/
+.ruff_cache/
+.pants.d/
+.pdm-venv/
+pdm.lock
+**/protoc_out/  # 如果使用了 protobuf，忽略生成的文件
+
+# Editor/IDE specific files (更全面的 IDE 文件忽略)
+*.orig
+*.rej
+*.pyc
+*.pyo
+*.pyd
+*.DS_Store
+*.idea/
+*.vscode-test/
+*.spyproject/
+*.ropeproject/
+*.sublime-project
+*.sublime-workspace
+*.history
+.tern-project
+.gwt-tmp
+.gwt
+.apt_generated
+.classpath
+.factorypath
+.settings
+.project
+*.launch
+*.vs/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.pdb
+*.user
+*.ncb
+*.aps
+*.sdf
+*.opensdf
+*.cachefile
+*.VC.db
+*.ipch
+*.obj
+*.dll
+*.tlb
+*.tli
+*.tlh
+*.exp
+*.lib
+*.map
+*.sbr
+*.bsc
+*.o
+*.lo
+*.la
+*.al
+*.so
+*.dylib
+*.a
+*.pc
+*.cmake
+cmake_install.cmake
+install_manifest.txt
+*.manifest
+*.tds
+*.userprefs
+_workspace/
+.gradle/
+.metadata/
+bin/
+gen/
+out/
+tmp/
+.settings/
+.idea/
+*.jps.xml
+*.class
+*.dat
+*.iws
+*.ipr
+*.iwr
+
+# Runtime data and configuration files (运行时数据和配置)
+*.pid
+*.seed
+
+# Temporary files created by running programs
+*.rpy-*.tmp
+
+# Custom ignores -  根据你的项目具体情况添加
+
+# Example: Ignore all files in a directory named 'temp_data'
+temp_data/*
+
+exp/
+
+temp/
+paper_exp/
+
+
+others/
+
+core.*
+
+models/
+
+.vscode/
+
+AdaFace/experiments
+
+outputs/
+
+dataset/
+
+

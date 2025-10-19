@@ -1,0 +1,30 @@
+# base
+torch
+torchvision
+diffusers
+transformers!=4.57.0
+Pillow>=9.0.0
+numpy>=1.23.0
+tqdm>=4.65.0
+timm==0.8.13.dev0
+ultralytics==8.1.0
+lapx>=0.5.2
+yt_dlp
+datasets
+accelerate
+peft>=0.17.0
+open_clip_torch
+pytorch_msssim
+lpips
+tensorboard
+tenacity
+xformers
+wandb
+pydantic<2.0
+
+
+# image process
+opencv-python>=4.5.0
+scipy>=1.7.0
+sympy==1.13.1
+

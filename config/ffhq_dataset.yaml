@@ -1,0 +1,10 @@
+dataset:
+  name: "ffhq" # 可选，数据集名称
+  type: "image"        # 数据集类型，例如 image, text, tabular 等，方便后续逻辑处理
+  transforms:             # 数据预处理配置
+    train:
+      # - "Resize: 512"
+      - "ToTensor"
+    val:
+      # - "Resize: 512"
+      - "ToTensor"

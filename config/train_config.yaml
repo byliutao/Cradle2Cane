@@ -1,0 +1,330 @@
+# ===== Model paths =====
+# Path to pretrained model or model identifier from huggingface.co/models
+pretrained_model_name_or_path: "./models/sdxl-turbo"
+
+# Path to pretrained VAE model with better numerical stability
+# More details: https://github.com/huggingface/diffusers/pull/4038
+pretrained_vae_model_name_or_path: "./models/sdxl-vae-fp16-fix"
+
+arcface_weight: ./models/backbone.pth
+
+clip_L_path: "./models/clip-vit-large-patch14/" 
+
+lpips_model_path: "./models/alex.pth"
+
+age_model_path: "./models/model_only_age_imdb_4.29.pth.tar"
+
+train_data_list: "./dataset/ffhq512_label_wo_bg"   # 训练集数据列表文件 (例如图片路径列表)
+
+lpips_net: "alex" 
+
+arcface_network: r100 
+
+
+# Revision of pretrained model identifier from huggingface.co/models
+revision: null
+
+# ===== Dataset configuration =====
+# The name of the Dataset to train on (from the HuggingFace hub) or path to a local dataset
+dataset_name: "config/ffhq_dataset.yaml"
+
+# The resolution for input images, all the images in the train/validation dataset will be resized to this resolution
+resolution: 512
+
+# Whether to center crop the input images to the resolution. If not set, the images will be randomly cropped
+center_crop: false
+
+# Whether to randomly flip images horizontally
+random_flip: true
+
+max_load_num: 70000
+
+
+
+# ===== Training parameters =====
+# Batch size (per device) for the training dataloader
+train_batch_size: 6
+
+# Number of training epochs
+num_train_epochs: 5
+
+# Total number of training steps to perform. If provided, overrides num_train_epochs
+max_train_steps: null 
+
+# Initial learning rate (after the potential warmup period) to use
+learning_rate: 1e-4
+
+# Scale the learning rate by the number of GPUs, gradient accumulation steps, and batch size
+scale_lr: false
+
+# The scheduler type to use. Choose between ["linear", "cosine", "cosine_with_restarts", "polynomial", "constant", "constant_with_warmup"]
+lr_scheduler: "constant"
+
+# Number of steps for the warmup in the lr scheduler
+lr_warmup_steps: 500
+
+# Number of updates steps to accumulate before performing a backward/update pass
+gradient_accumulation_steps: 1
+
+# Whether or not to use gradient checkpointing to save memory at the expense of slower backward pass
+gradient_checkpointing: true
+
+# Whether to use mixed precision. Choose between fp16 and bf16 (bfloat16)
+mixed_precision: "fp16"
+
+# Variant of the model files of the pretrained model identifier from huggingface.co/models, e.g. fp16
+variant: "fp16"
+
+# diffusion_loss_weight: 0.0
+
+pixel_mse_loss_weight: 0.1
+
+lpips_loss_weight: 0.5
+
+ssim_loss_weight: 0.1
+
+id_cos_loss_weight: 2
+
+age_loss_weight: 0.75
+
+age_loss_2_weight: 0.75
+
+g_loss_weight: 0.04
+
+# id_cos_loss_weight_base: 2
+
+# age_loss_weight_base: 0.75
+
+# age_loss_2_weight_base: 0.75
+
+start_g_loss_weigth: 0.04
+
+end_g_loss_weigth: 0.04
+
+d_loss_weight: 1.0
+
+d_loss_update_step: 6
+
+min_age: 1
+
+max_age: 80
+
+same_age_rate: 0.01
+
+age_scale: 20
+
+aged_strength: 0.5
+
+id_strength: 0.25
+
+infer_step: 4
+
+all_strength: [0.25, 0.5, 0.75]
+
+gender_strength: 0.5
+
+t1: 5
+
+t2: 30
+
+# ===== all use =====
+use_avg: True
+
+sort: False
+
+use_four_image_swr: False
+
+use_swr: False
+
+use_gan_loss: True
+
+use_arcface_project: True
+
+use_clip_project: True
+
+face_project_use_hidden_state: True
+
+pixel_mse_loss_use_weight: True
+
+lpips_loss_use_weight: False
+
+use_adaptive_noise_inject: True
+
+prompt_mode: "normal"
+
+age_sample_mode: "uniform" # normal or uniform
+
+clip_map_model: "angle" # vector or angle
+
+
+
+# ===== LoRA parameters =====
+# The dimension of the LoRA update matrices
+rank: 40
+
+
+
+# ===== Optimizer parameters =====
+# Whether or not to use 8-bit Adam from bitsandbytes
+use_8bit_adam: false
+
+# The beta1 parameter for the Adam optimizer
+adam_beta1: 0.9
+
+# The beta2 parameter for the Adam optimizer
+adam_beta2: 0.999
+
+# Weight decay to use
+adam_weight_decay: 1e-2
+
+# Epsilon value for the Adam optimizer
+adam_epsilon: 1e-8
+
+# Max gradient norm for gradient clipping
+max_grad_norm: 1.0
+
+# ===== Advanced training options =====
+# Whether to train the text encoder. If set, the text encoder should be float32 precision
+train_text_encoder: false
+
+# SNR weighting gamma to be used if rebalancing the loss. Recommended value is 5.0
+# More details here: https://arxiv.org/abs/2303.09556
+snr_gamma: null
+
+# The prediction_type that shall be used for training. Choose between 'epsilon' or 'v_prediction' or leave null
+prediction_type: null
+
+# Whether or not to use xformers for memory efficient attention
+enable_xformers_memory_efficient_attention: true
+
+# The scale of noise offset
+noise_offset: 0
+
+# Whether or not to allow TF32 on Ampere GPUs. Can be used to speed up training
+allow_tf32: false
+
+# Number of subprocesses to use for data loading. 0 means that the data will be loaded in the main process
+dataloader_num_workers: 3
+
+
+
+# ===== Checkpointing =====
+# The output directory where the model predictions and checkpoints will be written
+output_dir: "exp/test"
+
+# Save a checkpoint of the training state every X updates
+checkpointing_steps: 4000
+
+# Max number of checkpoints to store
+checkpoints_total_limit: null
+
+# Whether training should be resumed from a previous checkpoint
+resume_from_checkpoint: null
+
+# ===== Validation =====
+# validation_prompt:
+#   - "a face image of a 28 years old White female"
+#   - "a face image of a 33 years old White male"
+#   - "a face image of a 2 years old White female"
+#   - "a face image of a 50 years old White male"
+#   - "a face image of a 34 years old White female"
+#   - "a face image of a 25 years old White male"
+#   - "a face image of a 5 years old White female"
+#   - "a face image of a 60 years old Asian female"
+#   - "a face image of a 60 years old Indian male"
+ 
+ 
+
+validation_image:
+  - "./models/cele_plus_200_small/23_male_026591_Indian.jpg"
+  - "./models/cele_plus_200_small/23_male_095278_Black.jpg"
+  - "./models/cele_plus_200_small/40_male_119725_White.jpg"
+  - "./models/cele_plus_200_small/42_female_157023_White.jpg"
+  - "./models/cele_plus_200_small/42_male_002317_White.jpg"
+  - "./models/cele_plus_200_small/42_male_024606_Black.jpg"
+  - "./models/cele_plus_200_small/60_male_92_Asian.jpg"
+  - "./models/cele_plus_200_small/24_female_032895_White.jpg"
+  - "./models/cele_plus_200_small/41_female_002064_Black.jpg"
+
+validation_target_age: [28, 33, 2, 50, 34, 25, 5, 60, 60]
+
+validation_target_gender: ["male", "male", "male", "female", "male", "male", "male", "female", "female"]
+
+
+# Number of images that should be generated during validation with validation_prompt
+num_validation_images: 1
+
+# Run fine-tuning validation every X epochs
+validation_steps: 100
+
+
+
+# ===== Hugging Face Hub =====
+# Whether or not to push the model to the Hub
+push_to_hub: false
+
+# The token to use to push to the Model Hub
+hub_token: null
+
+# The name of the repository to keep in sync with the local output_dir
+hub_model_id: null
+
+
+
+# ===== Logging =====
+# TensorBoard log directory
+logging_dir: "logs"
+
+# The integration to report the results and logs to. Supported: tensorboard, wandb, comet_ml
+report_to: "tensorboard"
+
+
+
+# ===== Debug options =====
+# Debug loss for each image, if filenames are available in the dataset
+debug_loss: False
+
+# Debug specific dataset index (-1 to disable)
+debug_index: -1
+
+
+
+
+
+
+
+# ===== embedding_fuse_model =====
+embedding_fuse_save_name: "embedding_fuse.bin" 
+
+face_project_save_name: "face_project.bin"
+
+face_project_hidden_dim: 25088
+
+face_project_feature_dim: 512
+
+face_project_output_dim: 2048
+
+clip_project_save_name: "clip_project.bin"
+
+clip_project_input_dim: 768
+
+clip_project_output_dim: 2048
+
+
+
+
+# ===== swr loss =====
+swr_alpha: 0.01
+
+swr_beta: 1.1
+
+
+# ===== Other =====
+# A seed for reproducible training
+seed: 42
+
+# For distributed training: local_rank
+local_rank: -1
+
+
+
