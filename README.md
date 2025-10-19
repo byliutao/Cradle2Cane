@@ -14,7 +14,7 @@
 </p>
 
 
-
+## TODO
 <!-- ## ⭐️Highlights -->
 
 <!-- ![highlight](docs/highlight.png) -->
@@ -54,11 +54,10 @@ The following figure provides a statistical analysis of the annotated instances 
 
 
 
-## 🛠️ Usage
+<!-- ## 🛠️ Usage
 
 ### 1. Installation
 
-Please refer to [mmrotate dev-1.x](https://github.com/open-mmlab/mmrotate/blob/dev-1.x) for more detailed instructions.
 
 ```sh
 git clone https://github.com/byliutao/Cradle2Cane
@@ -78,9 +77,9 @@ huggingface-cli download --resume-download byliutao/Cradle2Cane --local-dir mode
 
 # infer
 python infer.py
-```
+``` -->
 
-> Note: Install PyTorch please following [official instructions](https://pytorch.org/get-started/locally/).
+<!-- > Note: Install PyTorch please following [official instructions](https://pytorch.org/get-started/locally/). -->
 
 <!-- ### 2. Dataset Prepare
 
