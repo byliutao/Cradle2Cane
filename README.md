@@ -2,11 +2,11 @@
   <h1 align="center">From Cradle to Cane: A Two-Pass Framework for High-Fidelity Lifespan Face Aging</h1>
   <h3 align='center'>NeurIPS 2025</h3>
   <div align="center">
-      <a href='https://arxiv.org/abs/2506.20977'><img src='https://img.shields.io/badge/arXiv-2501.04440-brown.svg?logo=arxiv&logoColor=white'></a>
+      <!-- <a href='https://arxiv.org/abs/2506.20977'><img src='https://img.shields.io/badge/arXiv-2501.04440-brown.svg?logo=arxiv&logoColor=white'></a>
       <a href='https://github.com/byliutao/Cradle2Cane'><img src='https://img.shields.io/badge/Github-page-yellow.svg?logo=Github&logoColor=white'></a>
       <a href='https://drive.google.com/file/d/127itsjDxM24P-AkiOx6JGD9UXgbCirW4/view?usp=sharing'><img src='https://img.shields.io/badge/GoogleDrive-dataset-blue.svg?logo=GoogleDrive&logoColor=white'></a>
       <a href='https://pan.baidu.com/s/1DVUNBuWrhJRg0H1qhwtfEQ?pwd=rsar'><img src='https://img.shields.io/badge/BaiduNetdisk-dataset-blue.svg?logo=baidu&logoColor=white'></a>
-      <a href='https://zhuanlan.zhihu.com/p/16758735545'><img src='https://img.shields.io/badge/Zhihu-chinese_article-blue.svg?logo=zhihu&logoColor=white'></a>
+      <a href='https://zhuanlan.zhihu.com/p/16758735545'><img src='https://img.shields.io/badge/Zhihu-chinese_article-blue.svg?logo=zhihu&logoColor=white'></a> -->
   </div>
   <p align='center'>
       If you find our work helpful, please consider giving us a ⭐!
@@ -15,12 +15,12 @@
 
 
 
-## ⭐️Highlights
+<!-- ## ⭐️Highlights -->
 
 <!-- ![highlight](docs/highlight.png) -->
 
 
-## 📋Introduction
+<!-- ## 📋Introduction
 
 <h3 align='left'>
     Abstract
@@ -49,7 +49,7 @@ This dataset is build on [SARDet-100K](https://github.com/zcablii/SARDet_100K) a
 
 The following figure provides a statistical analysis of the annotated instances for each category in the RSAR dataset
 
-![RSAR_sta](docs/RSAR_sta.png)
+![RSAR_sta](docs/RSAR_sta.png) -->
 
 
 
@@ -82,7 +82,7 @@ python infer.py
 
 > Note: Install PyTorch please following [official instructions](https://pytorch.org/get-started/locally/).
 
-### 2. Dataset Prepare
+<!-- ### 2. Dataset Prepare
 
 Download the `RSAR` dataset from the[![dataset](https://img.shields.io/badge/GoogleDrive-dataset-blue.svg?logo=GoogleDrive&logoColor=white)](https://drive.google.com/file/d/127itsjDxM24P-AkiOx6JGD9UXgbCirW4/view?usp=sharing) or [![dataset](https://img.shields.io/badge/BaiduNetdisk-dataset-blue.svg?logo=baidu&logoColor=white)](https://pan.baidu.com/s/1DVUNBuWrhJRg0H1qhwtfEQ?pwd=rsar) and extract the files to `$DATAROOT`. The directory structure should look like:
 
@@ -201,5 +201,5 @@ If you have any question, please feel free to contact us via `zhasion@mail.nanka
 
 ## License
 
-Licensed under a [Creative Commons Attribution-NonCommercial 4.0 International](https://creativecommons.org/licenses/by-nc/4.0/) for Non-commercial use only. Any commercial use should get formal permission first.
+Licensed under a [Creative Commons Attribution-NonCommercial 4.0 International](https://creativecommons.org/licenses/by-nc/4.0/) for Non-commercial use only. Any commercial use should get formal permission first. -->
 
