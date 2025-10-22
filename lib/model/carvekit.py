@@ -124,18 +124,27 @@ def interface_call(
 class CarveKit():
     def __init__(self, seg_net_path, fba_path, device, weight_dtpye):
         # Check doc strings for more information
+        # self.seg_net = TracerUniversalB7(device=device,
+        #             batch_size=1, model_path=seg_net_path)
+    
         self.seg_net = TracerUniversalB7(device=device,
-                    batch_size=1, model_path=seg_net_path)
+            batch_size=1)
         
         setattr(TracerUniversalB7, '__call__', seg_call)
         setattr(TracerUniversalB7, 'my_data_preprocessing', my_data_preprocessing)
 
 
+        # self.fba = FBAMatting(device=device,
+        #                 input_tensor_size=2048,
+        #                 batch_size=1, load_pretrained=False)
+
+        # self.fba.load_state_dict(torch.load(fba_path, map_location=device))
+
         self.fba = FBAMatting(device=device,
                         input_tensor_size=2048,
-                        batch_size=1, load_pretrained=False)
+                        batch_size=1)
 
-        self.fba.load_state_dict(torch.load(fba_path, map_location=device))
+        
 
         self.seg_net = self.seg_net.to(device, dtype=weight_dtpye)
         self.fba = self.fba.to(device, dtype=weight_dtpye)
@@ -185,7 +194,7 @@ def process_dataset(carveKit, dataset_dir, output_dir):
 
 
 if __name__ == "__main__":
-    carvekit = CarveKit("/home/u2120240694/data/model/tracer_b7.pth", "/home/u2120240694/data/model/fba_matting.pth", "cuda:0", torch.float32)
+    carvekit = CarveKit("./data/model/tracer_b7.pth", "./data/model/fba_matting.pth", "cuda:0", torch.float32)
     process_dataset(carvekit, "others/celeba_hq_256", "others/celeba_hq_256_wo_bg")
     
     
