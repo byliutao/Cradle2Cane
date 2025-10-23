@@ -60,7 +60,7 @@ from lib.utils import common_utils
 from lib.model.age_map import map_attr, map_age1
 from lib.model.gan_loss import Discriminator
 from lib.model import lipis
-from lib.utils import common_utils, train_utils, qwen_utils, config_utils
+from lib.utils import common_utils, train_utils, config_utils
 from lib.model.age_predictor import AgePredictor
 from lib.model.arcface import ArcFace
 from lib.model.gan_loss import Discriminator, generator_hinge_loss, discriminator_hinge_loss

@@ -17,6 +17,7 @@ class PictureInfo:
     gender: Optional[str]  # "M" of "F" or "-1"
     bbox: List[int] = field(default_factory=lambda: [-1, -1, -1, -1])  # face bbox: xyxy
     person_bbox: List[int] = field(default_factory=lambda: [-1, -1, -1, -1])  # person bbox: xyxy
+    
 
     @property
     def has_person_bbox(self) -> bool:

@@ -34,7 +34,7 @@ class FaceToTextEmbeddingMapping(nn.Module):
 
         for hidden_dim in hidden_dims:
             self.layers.append(nn.Linear(prev_dim, hidden_dim))
-            self.layers.append(nn.LayerNorm(hidden_dim))
+            self.layers.append(nn.BatchNorm1d(hidden_dim))
             self.layers.append(nn.LeakyReLU(negative_slope=0.2))
             self.layers.append(nn.Dropout(0.3))
             prev_dim = hidden_dim
@@ -99,7 +99,7 @@ class CLIPToTextEmbeddingMapping(nn.Module):
 
         for hidden_dim in hidden_dims:
             self.layers.append(nn.Linear(prev_dim, hidden_dim))
-            self.layers.append(nn.LayerNorm(hidden_dim)) # 去掉 BatchNorm 和 Dropout 获取确定性输出
+            self.layers.append(nn.BatchNorm1d(hidden_dim)) # 去掉 BatchNorm 和 Dropout 获取确定性输出
             self.layers.append(nn.LeakyReLU(negative_slope=0.2))
             self.layers.append(nn.Dropout(0.3))
             prev_dim = hidden_dim

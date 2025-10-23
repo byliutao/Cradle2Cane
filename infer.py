@@ -163,12 +163,8 @@ def load_models_for_infer(args, device, weight_dtype, vae=None, arcFace=None, cl
     return models
 
 
-def single_infer(config, models, weight_dtype, input_image_path, target_ages, generator=None, save_combine=False):
-    labels = common_utils.get_labels_from_path(input_image_path)
-    input_image = common_utils.load_and_process_image(input_image_path)
-    # config.prompt_mode = prompt_mode
-    config.prompt_mode="normal"
-    config.use_fixed_strength = True
+def single_infer(config, models, weight_dtype, labels, input_image, target_ages, generator=None, save_combine=False):
+
 
     if getattr(config, 'prompt_mode', None) is None:
         config.prompt_mode = "normal"
@@ -209,14 +205,41 @@ def stitch_images(images):
     return stitched_image
 
 
+def remove_background_with_cravekit(image: Image.Image):
+    """
+    使用 CraveKit 对图像进行背景剔除
+    返回剔除背景后的 PIL.Image 对象
+    """
+    import torch
+    from carvekit.api.high import HiInterface
+
+    # Check doc strings for more information
+    interface = HiInterface(object_type="hairs-like",  # Can be "object" or "hairs-like".
+                            batch_size_seg=5,
+                            batch_size_matting=1,
+                            device='cuda' if torch.cuda.is_available() else 'cpu',
+                            seg_mask_size=640,  # Use 640 for Tracer B7 and 320 for U2Net
+                            matting_mask_size=2048,
+                            trimap_prob_threshold=231,
+                            trimap_dilation=30,
+                            trimap_erosion_iters=5,
+                            fp16=False)
+    images_without_background = interface([image])[0].convert('RGB')
+
+    return images_without_background
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Age transformation model inference")
-    parser.add_argument("--models_dir", type=str, default="models/cradle_2", help="Directory of the models")
+    parser.add_argument("--models_dir", type=str, default="models/Cradle2Cane", help="Directory of the models")
     parser.add_argument("--output_dir", type=str, default="outputs", help="Output directory")
     parser.add_argument("--device", type=str, default="cuda:1", help="Device to run the model on")
     parser.add_argument("--weight_dtype", type=str, default="float16", choices=["float16", "float32", "bfloat16"], help="Data type for weights")
-    parser.add_argument("--input_path", type=str, default="asserts/30.0_male.png", help="Input image path or folder")
+    parser.add_argument("--input_path", type=str, default="asserts/19_female.png", help="Input image path or folder")
     parser.add_argument("--save_combine", type=bool, default=False, help="Whether to save combined image")
+    parser.add_argument("--use_cravekit", action="store_true", help="Whether to remove background using CraveKit before inference")
+    
+
     args = parser.parse_args()
 
     config = config_utils.load_training_config(f"{args.models_dir}/hparams.yml")
@@ -230,9 +253,9 @@ if __name__ == "__main__":
         "float32": torch.float32
     }[args.weight_dtype]
 
+
     models = load_models_for_infer(config, args.device, weight_dtype)
     target_attrs = [1 + i * 1 for i in range(0, 80)]
-    # target_attrs = [5 + i * 15 for i in range(0, 6)]
     base_name = os.path.splitext(os.path.basename(args.input_path))[0]
     args.output_dir = os.path.join(args.output_dir, base_name)
     os.makedirs(args.output_dir, exist_ok=True)
@@ -242,7 +265,10 @@ if __name__ == "__main__":
         filename = os.path.basename(image_path)
         images = []
         input_image = common_utils.load_and_process_image(image_path)
-        input_image.save(os.path.join(output_subdir, f"{base_name}.jpg"))
+        labels = common_utils.get_labels_from_path(image_path)
+        if args.use_cravekit:
+            input_image = remove_background_with_cravekit(input_image)
+        input_image.save(os.path.join(output_subdir, f"{base_name}.png"))
 
         for i, target_attr in enumerate(target_attrs):
             start_time = time.time()
@@ -250,12 +276,13 @@ if __name__ == "__main__":
                 config=config,
                 models=models,
                 weight_dtype=weight_dtype,
-                input_image_path=image_path,
+                labels=labels,
+                input_image=input_image,
                 target_ages=target_attr,
                 save_combine=args.save_combine,
             )
             images.append(result)
-            save_path = os.path.join(output_subdir, f"{base_name}_{target_attr}.jpg")
+            save_path = os.path.join(output_subdir, f"{base_name}_{target_attr}.png")
             result.save(save_path)
             elapsed = time.time() - start_time
             print(f"Inference for {filename} @ {target_attr} took {elapsed:.2f} seconds.")
