@@ -112,9 +112,25 @@ pip install -r requirements.txt
 ```
 
 #### Download dataset for face recognize
-1. Download the dataset from [faces_webface_112×112 link](https://drive.google.com/file/d/1KxNCrXzln0lal3N4JiYl9cFOIhT78y1l/view)
-2. Unzip it to a desired location, `$REPOROOT/dataset/faces_webface_112×112`.
-3. run `python convert.py --rec_path $REPOROOT/dataset/faces_webface_112×112 --make_image_files --make_validation_memfiles`
+1. Download `labeled faces_webface_112×112 dataset` from [link](https://drive.google.com/file/d/1AsusK3jpPp19rYMq_7WOhtiLpW2LaHHi/view?usp=sharing) and unzip it to `$REPOROOT/dataset/faces_webface_112x112`
+2. Download the `faces_webface_112×112 dataset` from [link](https://drive.google.com/file/d/1KxNCrXzln0lal3N4JiYl9cFOIhT78y1l/view) and unzip it to `$REPOROOT/dataset/faces_webface_112x112`.
+3. run `python convert.py --rec_path $REPOROOT/dataset/faces_webface_112x112 --make_image_files --make_validation_memfiles`
+
+The directory structure should look like:
+
+```
+$REPOROOT
+|-- dataset  
+|   |-- faces_webface_112x112  # contains subdir with imgs
+|   |-- faces_webface_112x112_labeled  # contains images :*.jpg
+```
+
+#### Generate fake dataset and combine with real dataset
+```
+cd $REPOROOT
+conda activate cradle2cane
+bash config/gen_fake_fast.sh
+```
 
 ## 🚀Results
 

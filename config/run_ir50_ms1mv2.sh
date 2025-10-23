@@ -1,0 +1,21 @@
+python -m AdaFace.main \
+    --data_root ./dataset \
+    --train_data_path faces_webface_112x112 \
+    --val_data_path faces_webface_112x112 \
+    --prefix ir50_ms1mv2_adaface_ep50 \
+    --gpus 8 \
+    --arch ir_50 \
+    --weight_decay 5e-4 \
+    --batch_size 512 \
+    --num_workers 16 \
+    --epochs 50  \
+    --lr_milestones 25,40,48 \
+    --lr 0.1  \
+    --head adaface \
+    --m 0.4 \
+    --h 0.333 \
+    --low_res_augmentation_prob 0.2 `# <--- 修改：增强数据增强概率` \
+    --crop_augmentation_prob 0.2 `# <--- 修改：增强数据增强概率` \
+    --photometric_augmentation_prob 0.2 `# <--- 修改：增强数据增强概率` \
+    --custom_num_class 12572
+
