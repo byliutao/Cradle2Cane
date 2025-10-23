@@ -174,7 +174,7 @@ def single_infer(config, models, weight_dtype, labels, input_image, target_ages,
     attr_strength = train_utils.get_age_strength(config, abs(labels["age"]-target_ages))
         
     inputs = {"prompt": prompt, "input_image": input_image, "input_attr": labels["age"], "target_attr": target_ages,}
-    print(attr_strength)
+    # print(attr_strength)
     aged_image, final_image = infer_image_with_ID(config, inputs, models, attr_strength, generator, weight_dtype)
     
     if save_combine:
@@ -235,7 +235,7 @@ if __name__ == "__main__":
     parser.add_argument("--output_dir", type=str, default="outputs", help="Output directory")
     parser.add_argument("--device", type=str, default="cuda:1", help="Device to run the model on")
     parser.add_argument("--weight_dtype", type=str, default="float16", choices=["float16", "float32", "bfloat16"], help="Data type for weights")
-    parser.add_argument("--input_path", type=str, default="asserts/19_female.png", help="Input image path or folder")
+    parser.add_argument("--input_path", type=str, default="asserts/30_female_1.png", help="Input image path or folder")
     parser.add_argument("--save_combine", type=bool, default=False, help="Whether to save combined image")
     parser.add_argument("--use_cravekit", action="store_true", help="Whether to remove background using CraveKit before inference")
     

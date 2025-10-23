@@ -56,15 +56,15 @@ python infer.py
 
 
 
-### 2. Train
+### 2. Training
 
-Download the `ffhq 512×512` dataset from the [link](https://www.kaggle.com/datasets/chelove4draste/ffhq-512x512) and put the files to `$DATAROOT`.  
-Download the `json` directory from the [link](https://github.com/DCGM/ffhq-features-dataset/tree/master/json) and put it under `$DATAROOT`.  
-Download the `ffhq-dataset-v2.json` directory from the [link](https://drive.google.com/file/d/16N0RV4fHI6joBuKbQAoG34V_cQk7vxSA/view) and put it under `$DATAROOT`.  
+Download the `ffhq 512×512` dataset from the [link](https://www.kaggle.com/datasets/chelove4draste/ffhq-512x512) and put the files to `$REPOROOT/dataset`.  
+Download the `json` directory from the [link](https://github.com/DCGM/ffhq-features-dataset/tree/master/json) and put it under `$REPOROOT/dataset/eval`.  
+Download the `ffhq-dataset-v2.json` directory from the [link](https://drive.google.com/file/d/16N0RV4fHI6joBuKbQAoG34V_cQk7vxSA/view) and put it under `$REPOROOT/dataset/eval`.  
 The directory structure should look like:
 
 ```
-$DATAROOT
+$REPOROOT
 |-- dataset
 |   |-- ffhq512  # contains images :*.png
 |   |-- json  # contains images :*.json
@@ -72,7 +72,6 @@ $DATAROOT
 ```
 
 ```
-
 # preprocess ffhq512 dataset
 python -m lib.utils.ffhq_process
 
@@ -80,8 +79,42 @@ python -m lib.utils.ffhq_process
 bash config/train.sh
 ```
 
+### 3. Evaluation
+Download the `celeba-200` dataset from the [link](https://drive.google.com/file/d/1_y8c3Oe_W2ucC31VZlozDI7connOsmXh/view?usp=sharing) and unzip the folder to `$REPOROOT/dataset/eval`.  
+Download the `agedb-400` dataset from the [link](https://drive.google.com/file/d/1-ujJ25C4fLE4wBXC6kYC2vMoDkyUEpid/view?usp=sharing) and unzip the folder to `$REPOROOT/dataset/eval`.  (Follow [Arc2Face](https://arxiv.org/abs/2403.11641), we use agebd dataset to do lpips evaluation)
 
+The directory structure should look like:
 
+```
+$REPOROOT
+|-- dataset
+|   |-- eval  
+|   |   |-- celeba-200  # contains images :*.jpg
+|   |   |-- agedb-400  # contains images :*.jpg
+```
+
+```
+# please set api key and secret first in eval.sh
+bash config/eval.sh
+```
+
+### 4. Face Recognize Evaluation
+
+#### install environment
+```
+git clone https://github.com/mk-minchul/AdaFace.git
+cd Adaface
+
+conda create --name adaface pytorch==1.8.0 torchvision==0.9.0 cudatoolkit=10.2 -c pytorch
+conda activate adaface
+conda install scikit-image matplotlib pandas scikit-learn 
+pip install -r requirements.txt
+```
+
+#### Download dataset for face recognize
+1. Download the dataset from [faces_webface_112×112 link](https://drive.google.com/file/d/1KxNCrXzln0lal3N4JiYl9cFOIhT78y1l/view)
+2. Unzip it to a desired location, `$REPOROOT/dataset/faces_webface_112×112`.
+3. run `python convert.py --rec_path $REPOROOT/dataset/faces_webface_112×112 --make_image_files --make_validation_memfiles`
 
 ## 🚀Results
 

@@ -43,6 +43,12 @@ def get_labels_from_path(path_name):
         return {"age": int(float(labels[0])), 
             "gender": labels[1],
             "index": labels[2]}
+    elif len(labels) == 4:
+        return {"age": int(float(labels[0])), 
+            "gender": labels[1],
+            "index": labels[2],
+            "race": labels[3]}
+                
     else:
         raise ValueError(f"Invalid file name: {path_name}")
 
