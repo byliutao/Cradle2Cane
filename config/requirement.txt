@@ -21,7 +21,7 @@ tenacity
 xformers
 wandb
 pydantic<2.0
-
+openai
 
 # image process
 opencv-python>=4.5.0

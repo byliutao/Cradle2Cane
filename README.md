@@ -132,6 +132,12 @@ conda activate cradle2cane
 bash config/gen_fake_fast.sh
 ```
 
+#### Run training and eval
+```
+cd AdaFace
+conda activate adaface 
+bash ../config/run_ir50_ms1mv2.sh
+```
 ## 🚀Results
 
 ### 1. Weakly supervised Model 

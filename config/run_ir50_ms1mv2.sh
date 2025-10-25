@@ -1,9 +1,9 @@
-python -m AdaFace.main \
-    --data_root ./dataset \
+python main.py \
+    --data_root ../dataset \
     --train_data_path faces_webface_112x112 \
     --val_data_path faces_webface_112x112 \
     --prefix ir50_ms1mv2_adaface_ep50 \
-    --gpus 8 \
+    --gpus 2 \
     --arch ir_50 \
     --weight_decay 5e-4 \
     --batch_size 512 \
@@ -14,8 +14,8 @@ python -m AdaFace.main \
     --head adaface \
     --m 0.4 \
     --h 0.333 \
-    --low_res_augmentation_prob 0.2 `# <--- 修改：增强数据增强概率` \
-    --crop_augmentation_prob 0.2 `# <--- 修改：增强数据增强概率` \
-    --photometric_augmentation_prob 0.2 `# <--- 修改：增强数据增强概率` \
-    --custom_num_class 12572
-
+    --low_res_augmentation_prob 0.2 \
+    --crop_augmentation_prob 0.2 \
+    --photometric_augmentation_prob 0.2 \
+    --custom_num_class 12572 \
+2>&1 | tee experiments/train_$(date +%Y%m%d_%H%M%S).log
