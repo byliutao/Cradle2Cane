@@ -292,7 +292,7 @@ outputs/
 
 /dataset/
 
-eval/
+/dataset/eval
 
 AdaFace/
 
