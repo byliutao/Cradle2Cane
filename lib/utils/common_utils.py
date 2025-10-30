@@ -19,17 +19,6 @@ def generate_prompts(target_ages, labels):
     return prompts
 
 
-def _generate_prompts(target_ages, genders):
-    age_list = target_ages
-    prompts = []
-
-    for age, gender in zip(age_list, genders):
-        prompt = f"a face image of a {age} years old {gender}"
-        prompts.append(prompt)
-
-    return prompts
-
-
 def get_labels_from_path(path_name):
 
     path_obj = Path(path_name)
