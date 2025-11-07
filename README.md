@@ -140,12 +140,7 @@ bash ../config/run_ir50_ms1mv2.sh
 ```
 ## 🚀Results
 
-### 1. Weakly supervised Model 
-
-
-### 2. Fully supervised Model (base on RSAR)
-
-
+### TODO
 
 
 ## 📘Citation
@@ -154,9 +149,9 @@ If you find our paper or benchmark helpful for your research, please consider ci
 
 ```bibtex
 @inproceedings{
-anonymous2025from,
+liu2025from,
 title={From Cradle to Cane: A Two-Pass Framework for High-Fidelity Lifespan Face Aging},
-author={Anonymous},
+author={Tao Liu and Dafeng Zhang and Gengchen Li and Shizhuo Liu and yongqi song and Senmao Li and Shiqi Yang and Boqian Li and Kai Wang and Yaxing Wang},
 booktitle={The Thirty-ninth Annual Conference on Neural Information Processing Systems},
 year={2025},
 url={https://openreview.net/forum?id=E1eVGJ5RYG}
