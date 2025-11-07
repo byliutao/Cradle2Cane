@@ -2,13 +2,14 @@ import os
 import shutil
 import argparse
 
-def copy_all_subfolders(source_dir, dest_dir):
+def copy_all_subfolders(source_dir, dest_dir, limit=None):
     """
-    将源目录中的所有子文件夹复制到目标目录。
+    将源目录中的前 N 个子文件夹复制到目标目录。
 
     参数:
     source_dir (str): 源文件夹路径。
     dest_dir (str): 目标文件夹路径。
+    limit (int, 可选): 限制复制的子文件夹数量，默认为全部复制。
     """
     # 确保目标文件夹存在
     if not os.path.exists(dest_dir):
@@ -31,7 +32,12 @@ def copy_all_subfolders(source_dir, dest_dir):
         print(f"⚠ 源目录 {source_dir} 中没有子文件夹可复制。")
         return
 
-    print(f"📁 共发现 {len(subfolders)} 个子文件夹，准备全部复制:")
+    # 如果设置了限制数量
+    if limit is not None:
+        subfolders = subfolders[:limit]
+        print(f"📋 仅复制前 {limit} 个子文件夹。")
+
+    print(f"📁 共发现 {len(subfolders)} 个子文件夹，准备复制:")
     print(subfolders)
 
     # 循环复制子文件夹
@@ -56,7 +62,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="复制所有子文件夹工具")
     parser.add_argument("--source", required=True, help="源目录路径（包含子文件夹）")
     parser.add_argument("--dest", required=True, help="目标目录路径")
+    parser.add_argument("--limit", type=int, default=3000, help="限制复制的子文件夹数量（默认复制全部）")
 
     args = parser.parse_args()
 
-    copy_all_subfolders(args.source, args.dest)
+    copy_all_subfolders(args.source, args.dest, args.limit)

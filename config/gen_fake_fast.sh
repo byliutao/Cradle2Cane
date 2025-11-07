@@ -3,9 +3,9 @@
 # 总共要启动的并行工作进程数量
 NUM_WORKERS=4
 # !!! 总共希望处理的图像数量
-FAKE_NUM=5000 
+FAKE_NUM=4000 
 INPUT_DIR="dataset/faces_webface_112x112_labeled"
-FAKE_DIR="dataset/faces_webface_112x112_labeled_fake"
+FAKE_DIR="dataset/faces_webface_112x112_labeled_fake_${FAKE_NUM}"
 COMBINE_DIR="dataset/faces_webface_112x112/imgs"
 
 # --- !!! 新增：计算每个worker的工作量 ---
@@ -46,22 +46,22 @@ do
     --input_image_folder ${INPUT_DIR} \
     --models_dir "models/Cradle2Cane" \
     --output_dir ${FAKE_DIR} \
-    --min_target_age 15 \
-    --num_ages_per_id 50 \
+    --min_target_age 1 \
+    --num_ages_per_id 80 \
     --device "$DEVICE" \
     --weight_dtype "float16" \
     --seed 42 \
     --num_workers $NUM_WORKERS \
     --worker_rank $i \
-    --num_ids_to_process ${FAKE_NUM_PER_WORKER} &> "outputs/worker_$i.log" & # !!! 关键修改
+    --num_ids_to_process ${FAKE_NUM_PER_WORKER} &> "outputs/gen/worker_$i.log" & # !!! 关键修改
 
 done
 
 # 等待所有在后台启动的进程执行完毕
 wait
 
-python -m lib.eval.combine_data \
-  --source ${FAKE_DIR} \
-  --dest ${COMBINE_DIR} 
+# python -m lib.eval.combine_data \
+#   --source ${FAKE_DIR} \
+#   --dest ${COMBINE_DIR} 
 
-echo "所有工作进程已完成。"
+# echo "所有工作进程已完成。"
