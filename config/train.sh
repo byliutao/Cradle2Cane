@@ -1,7 +1,6 @@
 #!/bin/bash
 set -e
 set -o pipefail
-export CUDA_VISIBLE_DEVICES=0
 
 # 基本参数
 MAX_LOAD_NUM=10000
