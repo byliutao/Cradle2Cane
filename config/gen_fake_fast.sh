@@ -3,7 +3,7 @@
 # 总共要启动的并行工作进程数量
 NUM_WORKERS=4
 # !!! 总共希望处理的图像数量
-FAKE_NUM=4000 
+FAKE_NUM=3000 
 INPUT_DIR="dataset/faces_webface_112x112_labeled"
 FAKE_DIR="dataset/faces_webface_112x112_labeled_fake_${FAKE_NUM}"
 COMBINE_DIR="dataset/faces_webface_112x112/imgs"
@@ -60,8 +60,9 @@ done
 # 等待所有在后台启动的进程执行完毕
 wait
 
-# python -m lib.eval.combine_data \
-#   --source ${FAKE_DIR} \
-#   --dest ${COMBINE_DIR} 
+python -m lib.eval.combine_data \
+  --source ${FAKE_DIR} \
+  --dest ${COMBINE_DIR} \
+  --limit 3000
 
 # echo "所有工作进程已完成。"
