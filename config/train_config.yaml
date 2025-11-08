@@ -14,7 +14,7 @@ lpips_model_path: "./models/alex.pth"
 
 age_model_path: "./models/model_only_age_imdb_4.29.pth.tar"
 
-train_data_list: "./dataset/ffhq512_label_wo_bg"   # 训练集数据列表文件 (例如图片路径列表)
+train_data_list: "./dataset/ffhq512_labeled"   # 训练集数据列表文件 (例如图片路径列表)
 
 lpips_net: "alex" 
 
