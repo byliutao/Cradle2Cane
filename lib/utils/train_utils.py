@@ -781,7 +781,7 @@ def run_validation(args, accelerator, models, pipeline, weight_dtype):
         labels = common_utils.get_labels_from_path(input_image_path)
         input_image = common_utils.load_and_process_image(input_image_path)
 
-        prompt = common_utils.generate_prompts([target_attr], [labels["race"]], [labels["gender"]], args.prompt_mode)[0]
+        prompt = common_utils.generate_prompts([target_attr], labels)[0]
           
 
         if args.use_arcface_project:

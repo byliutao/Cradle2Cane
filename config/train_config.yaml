@@ -222,29 +222,16 @@ checkpoints_total_limit: null
 resume_from_checkpoint: null
 
 # ===== Validation =====
-# validation_prompt:
-#   - "a face image of a 28 years old White female"
-#   - "a face image of a 33 years old White male"
-#   - "a face image of a 2 years old White female"
-#   - "a face image of a 50 years old White male"
-#   - "a face image of a 34 years old White female"
-#   - "a face image of a 25 years old White male"
-#   - "a face image of a 5 years old White female"
-#   - "a face image of a 60 years old Asian female"
-#   - "a face image of a 60 years old Indian male"
- 
- 
-
 validation_image:
-  - "./models/cele_plus_200_small/23_male_026591_Indian.jpg"
-  - "./models/cele_plus_200_small/23_male_095278_Black.jpg"
-  - "./models/cele_plus_200_small/40_male_119725_White.jpg"
-  - "./models/cele_plus_200_small/42_female_157023_White.jpg"
-  - "./models/cele_plus_200_small/42_male_002317_White.jpg"
-  - "./models/cele_plus_200_small/42_male_024606_Black.jpg"
-  - "./models/cele_plus_200_small/60_male_92_Asian.jpg"
-  - "./models/cele_plus_200_small/24_female_032895_White.jpg"
-  - "./models/cele_plus_200_small/41_female_002064_Black.jpg"
+  - "./dataset/ffhq512_labeled/23.0_male_66083_White.png"
+  - "./dataset/ffhq512_labeled/23.0_male_60807_Indian.png"
+  - "./dataset/ffhq512_labeled/40.0_male_02534_Asian.png"
+  - "./dataset/ffhq512_labeled/42.0_female_32231_White.png"
+  - "./dataset/ffhq512_labeled/42.0_male_17314_White.png"
+  - "./dataset/ffhq512_labeled/42.0_male_37800_White.png"
+  - "./dataset/ffhq512_labeled/60.0_male_28300_White.png"
+  - "./dataset/ffhq512_labeled/24.0_female_46754_White.png"
+  - "./dataset/ffhq512_labeled/41.0_female_29651_White.png"
 
 validation_target_age: [28, 33, 2, 50, 34, 25, 5, 60, 60]
 
