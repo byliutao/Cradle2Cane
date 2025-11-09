@@ -778,7 +778,7 @@ def run_validation(args, accelerator, models, pipeline, weight_dtype):
     validation_target_attrs = args.validation_target_age
             
     for input_image_path, target_attr in zip(args.validation_image, validation_target_attrs):
-        labels = common_utils.get_labels_from_path(input_image_path, args.prompt_mode)
+        labels = common_utils.get_labels_from_path(input_image_path)
         input_image = common_utils.load_and_process_image(input_image_path)
 
         prompt = common_utils.generate_prompts([target_attr], [labels["race"]], [labels["gender"]], args.prompt_mode)[0]
