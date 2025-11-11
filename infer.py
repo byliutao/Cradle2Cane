@@ -171,7 +171,7 @@ def single_infer(config, models, weight_dtype, labels, input_image, target_ages,
 
     prompt = common_utils.generate_prompts([target_ages], labels)[0]
     # print(prompt)
-    attr_strength = train_utils.get_age_strength(config, abs(labels["age"]-target_ages))
+    attr_strength = train_utils.get_age_strength(config, abs(labels["age"]-target_ages), one_threshold=config.one_threshold)
         
     inputs = {"prompt": prompt, "input_image": input_image, "input_attr": labels["age"], "target_attr": target_ages,}
     # print(attr_strength)
@@ -237,6 +237,7 @@ if __name__ == "__main__":
     parser.add_argument("--weight_dtype", type=str, default="float16", choices=["float16", "float32", "bfloat16"], help="Data type for weights")
     parser.add_argument("--input_path", type=str, default="asserts/14.0_male.png", help="Input image path or folder")
     parser.add_argument("--save_combine", type=bool, default=False, help="Whether to save combined image")
+    parser.add_argument("--one_threshold", action="store_true",)
     parser.add_argument("--use_cravekit", action="store_true", help="Whether to remove background using CraveKit before inference")
     
 
@@ -245,6 +246,7 @@ if __name__ == "__main__":
     config = config_utils.load_training_config(f"{args.models_dir}/hparams.yml")
     config = SimpleNamespace(**config)
     config.output_dir = args.models_dir
+    config.one_threshold = args.one_threshold
     os.makedirs(args.output_dir, exist_ok=True)
 
     weight_dtype = {

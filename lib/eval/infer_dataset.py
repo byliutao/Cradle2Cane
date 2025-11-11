@@ -15,7 +15,7 @@ def process_single_image(config, image_path, models, output_base_dir, weight_dty
 
     for target_attr in target_ages:
         prompt = common_utils.generate_prompts([target_attr], label,)[0]
-        attr_strength = train_utils.get_age_strength(config, abs(label["age"] - target_attr))
+        attr_strength = train_utils.get_age_strength(config, abs(label["age"] - target_attr), one_threshold=config.one_threshold)
 
         inputs = {
             "prompt": prompt,
@@ -40,7 +40,7 @@ def process_single_image(config, image_path, models, output_base_dir, weight_dty
             final_image.save(output_path)
 
 def main_folder(input_folder, models_dir, output_dir, device, weight_dtype, target_ages,
-                  max_num=20, generator=None, save_combine=False):
+                  max_num=20, generator=None, save_combine=False, one_threshold=False):
     os.makedirs(output_dir, exist_ok=True)
     image_extensions = [".jpg", ".jpeg", ".png", ".bmp", ".webp"]
 
@@ -48,6 +48,7 @@ def main_folder(input_folder, models_dir, output_dir, device, weight_dtype, targ
     config = config_utils.load_training_config(os.path.join(models_dir, "hparams.yml"))
     config = SimpleNamespace(**config)
     config.output_dir = models_dir
+    config.one_threshold = one_threshold
 
     # 自动推断数据类型
     if config.mixed_precision == "fp16":
@@ -80,11 +81,12 @@ if __name__ == "__main__":
     # 解析命令行参数
     parser = argparse.ArgumentParser(description="批量年龄编辑推理脚本")
 
-    parser.add_argument("--models_dir", type=str, default="models/cradle_2", help="训练模型目录，需包含 hparams.yml")
+    parser.add_argument("--models_dir", type=str, default="models/Cradle2Cane", help="训练模型目录，需包含 hparams.yml")
     parser.add_argument("--output_dir", type=str, default="temp/agedb-400-label", help="输出图像路径")
     parser.add_argument("--input_folder", type=str, default="models/agedb-400-label", help="原始图像文件夹")
     parser.add_argument("--device", type=str, default="cuda:0", help="模型运行设备")
     parser.add_argument("--weight_dtype", type=str, default="float32", choices=["float16", "float32", "bfloat16"], help="模型权重精度类型")
+    parser.add_argument("--one_threshold", action="store_true",)
     parser.add_argument("--save_combine", action="store_true", help="是否保存原图+编辑图+最终图拼接结果")
     parser.add_argument("--max_num", type=int, default=1000, help="每类最多处理图像数")
     parser.add_argument("--seed", type=int, default=42, help="随机种子，用于确保结果可复现") # <-- 1. 新增 seed 参数
@@ -113,4 +115,5 @@ if __name__ == "__main__":
         max_num=args.max_num,
         save_combine=args.save_combine,
         generator=generator, 
+        one_threshold=args.one_threshold,
     )

@@ -213,7 +213,7 @@ def single_infer(config, models, weight_dtype, labels,
         config.prompt_mode = "normal"
 
     prompt = common_utils.generate_prompts([target_ages], labels)[0]
-    attr_strength = train_utils.get_age_strength(config, abs(labels["age"] - target_ages))
+    attr_strength = train_utils.get_age_strength(config, abs(labels["age"] - target_ages), one_threshold=config.one_threshold)
 
     inputs = {
         "prompt": prompt,
@@ -285,11 +285,13 @@ if __name__ == "__main__":
     parser.add_argument("--input_path", type=str, required=True,
                         help="A single image or a folder of images")
     parser.add_argument("--save_combine", action="store_true")
+    parser.add_argument("--one_threshold", action="store_true",)
     args = parser.parse_args()
 
     config = config_utils.load_training_config(f"{args.models_dir}/hparams.yml")
     config = SimpleNamespace(**config)
     config.output_dir = args.models_dir
+    config.one_threshold = args.one_threshold
 
     os.makedirs(args.output_dir, exist_ok=True)
 

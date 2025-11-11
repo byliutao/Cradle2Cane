@@ -149,6 +149,8 @@ def parse_args(input_args=None):
     parser.add_argument("--ssim_loss_weight", type=float,default=None,)
     parser.add_argument("--g_loss_weight", type=float,default=None,)
     parser.add_argument("--lpips_loss_weight", type=float,default=None,)
+    parser.add_argument("--one_threshold", action="store_true",)
+
 
     
     if input_args is not None:

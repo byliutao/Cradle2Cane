@@ -3,10 +3,10 @@ set -e
 set -o pipefail
 
 # 基本参数
-MAX_LOAD_NUM=10000
-EPOCH=40
+MAX_LOAD_NUM=100
+EPOCH=1
 EXP_NUM=200
-NUM__PROCESSES=2
+NUM__PROCESSES=1
 BATCH=2
 
 BASE="models"
@@ -30,7 +30,6 @@ accelerate launch --mixed_precision 'fp16' \
   --lpips_loss_weight 1 \
   --t1 10 \
   --t2 30 
-
 
 
 

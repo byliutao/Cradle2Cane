@@ -794,7 +794,7 @@ def run_validation(args, accelerator, models, pipeline, weight_dtype):
         else:
             clip_project_model = None
         
-        attr_strength = train_utils.get_age_strength(args, abs(labels["age"]-target_attr))
+        attr_strength = train_utils.get_age_strength(args, abs(labels["age"]-target_attr), one_threshold=args.one_threshold)
 
                                             
         inputs = {"prompt": prompt, "input_image": input_image, "input_attr": labels["age"], "target_attr": target_attr,}
@@ -1173,7 +1173,15 @@ def compute_time_ids(resolution, original_size, crops_coords_top_left, device, w
     return add_time_ids
 
 
-def get_age_strength(args, age_diff):
+def get_age_strength(args, age_diff, one_threshold=False):
+    if one_threshold:
+        if abs(age_diff) <= args.t1:
+            aged_strength = 0.25
+        else:
+            aged_strength = 0.5
+
+        return aged_strength
+    
     if args.use_adaptive_noise_inject:
         if abs(age_diff) <= args.t1:
             aged_strength = 0.25
@@ -1218,7 +1226,7 @@ def get_inputs_from_batch_ffhq(args, batch, accelerator, weight_dtype):
     # 3. 计算裁剪后实际生效的年龄差 (actual_age_diff)
     actual_age_diff = target_ages[0] - input_ages[0]
 
-    aged_strength = get_age_strength(args, actual_age_diff.item())
+    aged_strength = get_age_strength(args, actual_age_diff.item(), args.one_threshold)
 
     # print(target_ages, input_ages, actual_age_diff, aged_strength)
     
@@ -1278,7 +1286,8 @@ def get_inputs_from_batch_ffhq_avg(args, batch, accelerator, weight_dtype):
     representative_diff = torch.mean(torch.abs(actual_age_diffs.float())).item()
 
     # 5. 基于这个代表性差值，计算一个统一的 aged_strength
-    aged_strength = get_age_strength(args, representative_diff)
+    aged_strength = get_age_strength(args, representative_diff, one_threshold=args.one_threshold)
+    # print(actual_age_diffs, representative_diff, aged_strength)
 
     target_face_descriptions = common_utils._generate_prompts(target_ages, batch["gender"])
 
