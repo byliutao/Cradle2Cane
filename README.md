@@ -140,7 +140,10 @@ bash ../config/run_ir50_ms1mv2.sh
 ```
 ## 🚀Results
 
-### TODO
+| 24 Male | 35.0 Female |
+| :---: | :---: |
+| <img src="asserts/24.0_male_stitched.png" width="100%"> | <img src="asserts/35.0_female_stitched.png" width="100%"> |
+
 
 
 ## 📘Citation

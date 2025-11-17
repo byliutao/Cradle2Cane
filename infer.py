@@ -5,7 +5,7 @@ from types import SimpleNamespace
 import argparse
 from PIL import Image
 import time
-
+import re 
 from diffusers import StableDiffusionXLImg2ImgPipeline
 from lib.utils import train_utils, common_utils, config_utils
 from lib.model.arcface import ArcFace
@@ -170,7 +170,10 @@ def single_infer(config, models, weight_dtype, labels, input_image, target_ages,
         config.prompt_mode = "normal"
 
     prompt = common_utils.generate_prompts([target_ages], labels)[0]
-    # print(prompt)
+    if config.addition_prompt is not None:
+        prompt = f"{prompt}, {config.addition_prompt}"
+    
+    print(prompt)
     attr_strength = train_utils.get_age_strength(config, abs(labels["age"]-target_ages), one_threshold=config.one_threshold)
         
     inputs = {"prompt": prompt, "input_image": input_image, "input_attr": labels["age"], "target_attr": target_ages,}
@@ -232,21 +235,44 @@ def remove_background_with_cravekit(image: Image.Image):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Age transformation model inference")
     parser.add_argument("--models_dir", type=str, default="models/Cradle2Cane", help="Directory of the models")
-    parser.add_argument("--output_dir", type=str, default="outputs", help="Output directory")
+    parser.add_argument("--output_dir", type=str, default="outputs/infer", help="Output directory")
     parser.add_argument("--device", type=str, default="cuda:1", help="Device to run the model on")
     parser.add_argument("--weight_dtype", type=str, default="float16", choices=["float16", "float32", "bfloat16"], help="Data type for weights")
-    parser.add_argument("--input_path", type=str, default="asserts/14.0_male.png", help="Input image path or folder")
+    parser.add_argument("--input_path", type=str, default="asserts/23_male.png", help="Input image path or folder")
     parser.add_argument("--save_combine", type=bool, default=False, help="Whether to save combined image")
+    parser.add_argument("--addition_prompt", type=str, default=None, help="prompt")
     parser.add_argument("--one_threshold", action="store_true",)
     parser.add_argument("--use_cravekit", action="store_true", help="Whether to remove background using CraveKit before inference")
     
-
     args = parser.parse_args()
+
+    def check_filename_format(filename):
+        """
+        检查文件名格式:
+        1. {age}: 可以是整数 (24) 或以 .0 结尾的浮点数 (24.0)，但不接受其他小数 (24.5)
+        2. {gender}: 必须是 'male' 或 'female'
+        例如: 
+          - 25_male.png (Pass)
+          - 25.0_male.png (Pass)
+          - 25.5_male.png (Fail)
+        """
+        # 正则解释:
+        # ^               : 开头
+        # (\d+|\d+\.0)    : 匹配 "纯数字" 或 "数字.0"
+        # _               : 下划线
+        # (male|female)   : 性别限制
+        # \.              : 点
+        # (png|jpg|jpeg)$ : 后缀
+        pattern = r'^(\d+|\d+\.0)_(male|female)\.(png|jpg|jpeg)$'
+        
+        return bool(re.match(pattern, filename, re.IGNORECASE))
+    # ---------------------------------
 
     config = config_utils.load_training_config(f"{args.models_dir}/hparams.yml")
     config = SimpleNamespace(**config)
     config.output_dir = args.models_dir
     config.one_threshold = args.one_threshold
+    config.addition_prompt = args.addition_prompt
     os.makedirs(args.output_dir, exist_ok=True)
 
     weight_dtype = {
@@ -255,22 +281,27 @@ if __name__ == "__main__":
         "float32": torch.float32
     }[args.weight_dtype]
 
-
     models = load_models_for_infer(config, args.device, weight_dtype)
     target_attrs = [1 + i * 1 for i in range(0, 80)]
-    base_name = os.path.splitext(os.path.basename(args.input_path))[0]
-    args.output_dir = os.path.join(args.output_dir, base_name)
-    os.makedirs(args.output_dir, exist_ok=True)
+    
+    base_name_global = os.path.splitext(os.path.basename(args.input_path))[0]
+    if config.addition_prompt is not None:
+        base_name_global = f"{base_name_global}_{config.addition_prompt}"
 
+    args.output_dir = os.path.join(args.output_dir, base_name_global) 
+    os.makedirs(args.output_dir, exist_ok=True)
 
     def process_image_file(image_path, output_subdir):
         filename = os.path.basename(image_path)
+        current_base_name = os.path.splitext(filename)[0]
+        
         images = []
         input_image = common_utils.load_and_process_image(image_path)
         labels = common_utils.get_labels_from_path(image_path)
         if args.use_cravekit:
             input_image = remove_background_with_cravekit(input_image)
-        input_image.save(os.path.join(output_subdir, f"{base_name}.png"))
+        
+        input_image.save(os.path.join(output_subdir, f"{current_base_name}.png"))
 
         for i, target_attr in enumerate(target_attrs):
             start_time = time.time()
@@ -284,24 +315,41 @@ if __name__ == "__main__":
                 save_combine=args.save_combine,
             )
             images.append(result)
-            save_path = os.path.join(output_subdir, f"{base_name}_{target_attr}.png")
+            save_path = os.path.join(output_subdir, f"{current_base_name}_{target_attr}.png")
             result.save(save_path)
             elapsed = time.time() - start_time
             print(f"Inference for {filename} @ {target_attr} took {elapsed:.2f} seconds.")
 
         stitched = common_utils.stitch_images(images, 10)
-        stitched.save(os.path.join(output_subdir, f"{base_name}_stitched.png"))
+        stitched.save(os.path.join(output_subdir, f"{current_base_name}_stitched.png"))
+
+    # --- 主执行逻辑 ---
 
     if os.path.isdir(args.input_path):
-        for filename in os.listdir(args.input_path):
+        print(f"Processing directory: {args.input_path}")
+        files = os.listdir(args.input_path)
+        for filename in files:
+            if filename.startswith('.'): 
+                continue
+                
             if filename.lower().endswith((".png", ".jpg", ".jpeg")):
+                if not check_filename_format(filename):
+                    print(f"⚠️  Skipping '{filename}': Invalid format. Name must be '{{number}}_{{male/female}}.ext'")
+                    continue
+                
                 image_path = os.path.join(args.input_path, filename)
                 output_subdir = os.path.join(args.output_dir, os.path.splitext(filename)[0])
-                os.makedirs(output_subdir, exist_ok=True)  # Create a subfolder for the image
-                process_image_file(image_path, output_subdir,)
+                os.makedirs(output_subdir, exist_ok=True)
+                process_image_file(image_path, output_subdir) # 注意：process_image_file 定义需在上面
+    
     elif os.path.isfile(args.input_path):
-        process_image_file(args.input_path, args.output_dir,)
+        filename = os.path.basename(args.input_path)
+        
+        if not check_filename_format(filename):
+            raise ValueError(f"Invalid filename: '{filename}'. \nFormat requirement: {{Age}}_{{Gender}}.png/jpg\nGender must be 'male' or 'female'.")
+            
+        process_image_file(args.input_path, args.output_dir)
+        
     else:
         raise ValueError(f"Invalid input_path: {args.input_path}")
-
 
