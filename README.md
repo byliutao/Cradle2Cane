@@ -51,7 +51,14 @@ huggingface-cli download --resume-download byliutao/Cradle2Cane --local-dir mode
 
 
 # infer
-python infer.py
+python infer.py --input_path asserts/23_male.png
+
+# in-the-wild image infer
+python infer.py --input_path asserts/25_male.png --one_threshold
+
+# infer with attribute change
+python infer.py --input_path asserts/20_female.png --addition_prompt "yellow hair"
+
 ``` 
 
 

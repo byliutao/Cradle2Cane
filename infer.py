@@ -170,12 +170,15 @@ def single_infer(config, models, weight_dtype, labels, input_image, target_ages,
         config.prompt_mode = "normal"
 
     prompt = common_utils.generate_prompts([target_ages], labels)[0]
-    if config.addition_prompt is not None:
-        prompt = f"{prompt}, {config.addition_prompt}"
+
     
     print(prompt)
     attr_strength = train_utils.get_age_strength(config, abs(labels["age"]-target_ages), one_threshold=config.one_threshold)
-        
+    
+    if config.addition_prompt is not None:
+        prompt = f"{prompt}, {config.addition_prompt}"
+        attr_strength = 0.75
+            
     inputs = {"prompt": prompt, "input_image": input_image, "input_attr": labels["age"], "target_attr": target_ages,}
     # print(attr_strength)
     aged_image, final_image = infer_image_with_ID(config, inputs, models, attr_strength, generator, weight_dtype)
